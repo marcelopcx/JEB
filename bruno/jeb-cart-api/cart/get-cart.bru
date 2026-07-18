@@ -1,0 +1,19 @@
+meta {
+  name: Get Cart
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/cart/{{userId}}
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("cart belongs to user", function() {
+    expect(res.body.userId).to.equal(bru.getEnvVar("userId"));
+  });
+}

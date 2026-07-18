@@ -1,0 +1,15 @@
+meta {
+  name: Remove Item From Cart
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{baseUrl}}/cart/{{userId}}/items/{{productId}}
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+}
