@@ -6,6 +6,14 @@ meta {
 
 delete {
   url: {{baseUrl}}/cart/{{userId}}/items/{{productId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8080/JEB-1.0-SNAPSHOT/api
+  userId: user1
+  productId: 1
 }
 
 tests {

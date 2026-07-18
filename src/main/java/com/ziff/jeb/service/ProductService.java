@@ -1,10 +1,10 @@
 package com.ziff.jeb.service;
 
 import com.ziff.jeb.entity.Product;
+import com.ziff.jeb.exception.ProductNotFoundException;
 import com.ziff.jeb.repository.dao.ProductRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 
@@ -20,6 +20,6 @@ public class ProductService {
 
     public Product getProduct(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Producto no encontrado: " + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 }

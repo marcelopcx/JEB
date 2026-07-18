@@ -6,13 +6,20 @@ meta {
 
 get {
   url: {{baseUrl}}/cart/{{userId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8080/JEB-1.0-SNAPSHOT/api
+  userId: user1
 }
 
 tests {
   test("status is 200", function() {
     expect(res.status).to.equal(200);
   });
-
+  
   test("cart belongs to user", function() {
     expect(res.body.userId).to.equal(bru.getEnvVar("userId"));
   });

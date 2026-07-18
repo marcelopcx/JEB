@@ -4,11 +4,11 @@ import com.ziff.jeb.cache.CartCache;
 import com.ziff.jeb.dto.CartDto;
 import com.ziff.jeb.dto.CartItemDto;
 import com.ziff.jeb.entity.Product;
+import com.ziff.jeb.exception.InvalidCartRequestException;
+import com.ziff.jeb.exception.ProductNotFoundException;
 import com.ziff.jeb.repository.dao.ProductRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
 
 import java.util.Optional;
 
@@ -27,12 +27,12 @@ public class CartService {
 
     public CartDto addItem(String userId, Long productId, int quantity) {
         if (quantity <= 0) {
-            throw new BadRequestException("La cantidad debe ser mayor a 0");
+            throw new InvalidCartRequestException("La cantidad debe ser mayor a 0");
         }
 
         // Solo aquí se consulta la DB: validar que el producto existe
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Producto no encontrado: " + productId));
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         CartDto cart = cartCache.getOrCreate(userId);
 
@@ -58,9 +58,8 @@ public class CartService {
     }
 
     public CartDto removeItem(String userId, Long productId) {
-        // Valida que el producto existe en DB
         productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Producto no encontrado: " + productId));
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         CartDto cart = cartCache.getOrCreate(userId);
         cart.getItems().removeIf(item -> item.getProductId().equals(productId));

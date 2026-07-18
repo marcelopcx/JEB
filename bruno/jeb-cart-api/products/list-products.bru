@@ -6,13 +6,19 @@ meta {
 
 get {
   url: {{baseUrl}}/products
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8080/JEB-1.0-SNAPSHOT/api
 }
 
 tests {
   test("status is 200", function() {
     expect(res.status).to.equal(200);
   });
-
+  
   test("returns an array", function() {
     expect(res.body).to.be.an("array");
   });
