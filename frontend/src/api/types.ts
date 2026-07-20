@@ -51,7 +51,7 @@ export type BackendOperation =
 
 export interface BackendPathExplanation {
   operation: BackendOperation
-  label: 'Explained backend path'
+  label: 'Ruta explicada del backend'
   steps: string[]
-  note: 'Static explanation, not runtime telemetry.'
+  note: 'Explicación estática, no telemetría en tiempo real.'
 }

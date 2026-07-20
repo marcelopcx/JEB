@@ -9,7 +9,7 @@ export function BackendPath({ exchange }: BackendPathProps) {
   const explanation = exchange ? explanationFor(exchange.method, exchange.path) : null
 
   if (!explanation) {
-    return <p>No explained path is available for this exchange.</p>
+    return <p>No hay una ruta explicada disponible para este intercambio.</p>
   }
 
   return (

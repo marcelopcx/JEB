@@ -1,4 +1,4 @@
-import type { HttpExchange } from '../api/types'
+import type { HttpExchange, HttpOutcome } from '../api/types'
 import { BackendPath } from './BackendPath'
 
 interface RequestInspectorProps {
@@ -6,9 +6,15 @@ interface RequestInspectorProps {
 }
 
 function body(value: unknown): string {
-  if (value === undefined) return 'None'
+  if (value === undefined) return 'Ninguno'
   if (typeof value === 'string') return value
   return JSON.stringify(value, null, 2)
+}
+
+const outcomeLabels: Record<HttpOutcome, string> = {
+  success: 'Éxito',
+  'http-error': 'Error HTTP',
+  'network-error': 'Error de red',
 }
 
 export function RequestInspector({ history }: RequestInspectorProps) {
@@ -18,28 +24,28 @@ export function RequestInspector({ history }: RequestInspectorProps) {
     <aside className="panel inspector" aria-labelledby="inspector-title">
       <div className="panel__heading">
         <div>
-          <p className="eyebrow">Observed at the browser boundary</p>
-          <h2 id="inspector-title">Latest HTTP exchange</h2>
+          <p className="eyebrow">Observado en el límite del navegador</p>
+          <h2 id="inspector-title">Último intercambio HTTP</h2>
         </div>
-        <span>{history.length}/20 retained</span>
+        <span>{history.length}/20 conservados</span>
       </div>
-      {!latest && <p>Use the catalog or cart to capture a real request.</p>}
+      {!latest && <p>Usa el catálogo o el carrito para capturar una solicitud real.</p>}
       {latest && <BackendPath exchange={latest} />}
       <div className="request-history">
         {history.map((exchange, index) => (
           <details key={exchange.id} open={index === 0}>
             <summary>
               <span>{exchange.method} {exchange.path}</span>
-              <span>{exchange.status ?? 'NETWORK'} · {exchange.durationMs} ms</span>
+              <span>{exchange.status ?? 'SIN RESPUESTA'} · {exchange.durationMs} ms</span>
             </summary>
             <dl>
-              <dt>Started</dt>
+              <dt>Inicio</dt>
               <dd>{exchange.startedAt}</dd>
-              <dt>Outcome</dt>
-              <dd>{exchange.outcome}</dd>
-              <dt>Request body</dt>
+              <dt>Resultado</dt>
+              <dd>{outcomeLabels[exchange.outcome]}</dd>
+              <dt>Cuerpo de la solicitud</dt>
               <dd><pre>{body(exchange.requestBody)}</pre></dd>
-              <dt>Response body</dt>
+              <dt>Cuerpo de la respuesta</dt>
               <dd><pre>{body(exchange.responseBody)}</pre></dd>
             </dl>
           </details>

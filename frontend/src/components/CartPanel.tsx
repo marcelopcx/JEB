@@ -25,25 +25,25 @@ export function CartPanel({
     <section className="panel" aria-labelledby="cart-title">
       <div className="panel__heading">
         <div>
-          <p className="eyebrow">Local in-memory cache</p>
-          <h2 id="cart-title">Cart {cart ? `for ${cart.userId}` : ''}</h2>
+          <p className="eyebrow">Caché local en memoria</p>
+          <h2 id="cart-title">Carrito {cart ? `de ${cart.userId}` : ''}</h2>
         </div>
-        {loading && <span role="status">Loading cart...</span>}
+        {loading && <span role="status">Cargando carrito...</span>}
       </div>
       {error && <p role="alert" className="error-message">{error}</p>}
-      {!cart && !loading && <p>No valid cart has loaded yet.</p>}
+      {!cart && !loading && <p>Aún no se ha cargado un carrito válido.</p>}
       {cart && (
         <>
           {cart.items.length === 0 ? (
-            <p className="empty-state">This cart is empty.</p>
+            <p className="empty-state">Este carrito está vacío.</p>
           ) : (
             <ul className="cart-list">
               {cart.items.map((item) => (
                 <li key={item.productId}>
                   <div>
                     <strong>{item.productName}</strong>
-                    <span>Quantity: {item.quantity}</span>
-                    <span>Unit price: {money(item.unitPrice)}</span>
+                    <span>Cantidad: {item.quantity}</span>
+                    <span>Precio unitario: {money(item.unitPrice)}</span>
                   </div>
                   <div className="cart-list__actions">
                     <strong>{money(item.subtotal)}</strong>
@@ -53,7 +53,7 @@ export function CartPanel({
                       disabled={pendingActions.has(`remove:${item.productId}`)}
                       onClick={() => onRemove(item.productId)}
                     >
-                      Remove {item.productName}
+                      Eliminar {item.productName}
                     </button>
                   </div>
                 </li>
@@ -61,7 +61,7 @@ export function CartPanel({
             </ul>
           )}
           <div className="cart-total">
-            <span>Backend total</span>
+            <span>Total del backend</span>
             <strong>{money(cart.total)}</strong>
           </div>
           <button
@@ -70,7 +70,7 @@ export function CartPanel({
             disabled={pendingActions.has('clear') || cart.items.length === 0}
             onClick={onClear}
           >
-            Clear cart
+            Vaciar carrito
           </button>
         </>
       )}

@@ -186,9 +186,9 @@ export function CartDemo({ apiFactory = createBrowserCartApi }: CartDemoProps) {
     <main className="app-shell">
       <header className="app-header">
         <div>
-          <p className="eyebrow">JEB · Jakarta EE classroom demo</p>
-          <h1>Transparent cart operations</h1>
-          <p>Real API evidence with explicitly static backend explanations.</p>
+          <p className="eyebrow">JEB · Demostración académica con Jakarta EE</p>
+          <h1>Operaciones transparentes del carrito</h1>
+          <p>Evidencia real de la API con explicaciones estáticas explícitas del backend.</p>
         </div>
         <div className="header-controls">
           <ConnectionStatus state={pendingActions.size > 0 ? 'loading' : connection} />

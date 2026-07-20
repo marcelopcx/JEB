@@ -44,10 +44,6 @@ function errorMessage(body: unknown, status: number): string {
   return `HTTP ${status}`
 }
 
-function causeMessage(cause: unknown): string {
-  return cause instanceof Error ? cause.message : String(cause)
-}
-
 function isUnavailableProxyResponse(status: number, body: unknown): boolean {
   return status === 502 && body === null
 }
@@ -94,7 +90,7 @@ export function createHttpClient(options: HttpClientOptions): HttpClient {
         if (proxyUnavailable) {
           throw new HttpRequestError(
             'network',
-            `Backend unreachable: HTTP ${response.status}`,
+            `No se puede acceder al backend: HTTP ${response.status}`,
             exchange,
           )
         }
@@ -109,7 +105,7 @@ export function createHttpClient(options: HttpClientOptions): HttpClient {
           throw cause
         }
 
-        const message = causeMessage(cause)
+        const message = 'No se pudo completar la solicitud de red.'
         const exchange: HttpExchange = {
           ...baseExchange,
           durationMs: Math.round(monotonicNow() - start),
@@ -119,7 +115,12 @@ export function createHttpClient(options: HttpClientOptions): HttpClient {
         }
 
         options.onExchange(exchange)
-        throw new HttpRequestError('network', `Backend unreachable: ${message}`, exchange, cause)
+        throw new HttpRequestError(
+          'network',
+          'No se puede acceder al backend: error de red.',
+          exchange,
+          cause,
+        )
       }
     },
   }

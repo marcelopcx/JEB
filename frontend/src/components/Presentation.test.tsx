@@ -44,9 +44,9 @@ const latestExchange: HttpExchange = {
 
 describe('presentation components', () => {
   it.each<[ConnectionState, string]>([
-    ['connected', 'Backend connected'],
-    ['loading', 'Contacting backend'],
-    ['unavailable', 'Backend unavailable'],
+    ['connected', 'Backend conectado'],
+    ['loading', 'Contactando al backend'],
+    ['unavailable', 'Backend no disponible'],
   ])('renders the %s connection state', (state, label) => {
     render(<ConnectionStatus state={state} />)
     expect(screen.getByRole('status')).toHaveTextContent(label)
@@ -66,11 +66,11 @@ describe('presentation components', () => {
       />,
     )
 
-    await user.clear(screen.getByLabelText('Quantity for Laptop'))
-    await user.type(screen.getByLabelText('Quantity for Laptop'), '0')
-    await user.click(screen.getByRole('button', { name: 'Add Laptop' }))
+    await user.clear(screen.getByLabelText('Cantidad de Laptop'))
+    await user.type(screen.getByLabelText('Cantidad de Laptop'), '0')
+    await user.click(screen.getByRole('button', { name: 'Agregar Laptop' }))
 
-    expect(screen.getByRole('alert')).toHaveTextContent('Enter a positive whole number.')
+    expect(screen.getByRole('alert')).toHaveTextContent('Ingresa un número entero positivo.')
     expect(onAdd).not.toHaveBeenCalled()
     expect(screen.queryByText(/stock/i)).not.toBeInTheDocument()
   })
@@ -90,9 +90,9 @@ describe('presentation components', () => {
       />,
     )
 
-    await user.clear(screen.getByLabelText('Quantity for Laptop'))
-    await user.type(screen.getByLabelText('Quantity for Laptop'), '3')
-    await user.click(screen.getByRole('button', { name: 'Add Laptop' }))
+    await user.clear(screen.getByLabelText('Cantidad de Laptop'))
+    await user.type(screen.getByLabelText('Cantidad de Laptop'), '3')
+    await user.click(screen.getByRole('button', { name: 'Agregar Laptop' }))
     expect(onAdd).toHaveBeenCalledWith(1, 3)
 
     rerender(
@@ -105,9 +105,9 @@ describe('presentation components', () => {
         onInspect={onInspect}
       />,
     )
-    expect(screen.getByRole('button', { name: 'Add Laptop' })).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Inspect Laptop' })).toBeEnabled()
-    await user.click(screen.getByRole('button', { name: 'Inspect Laptop' }))
+    expect(screen.getByRole('button', { name: 'Agregar Laptop' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Inspeccionar Laptop' })).toBeEnabled()
+    await user.click(screen.getByRole('button', { name: 'Inspeccionar Laptop' }))
     expect(onInspect).toHaveBeenCalledWith(1)
   })
 
@@ -123,7 +123,7 @@ describe('presentation components', () => {
       />,
     )
 
-    expect(screen.getByRole('status')).toHaveTextContent('Loading catalog...')
+    expect(screen.getByRole('status')).toHaveTextContent('Cargando catálogo...')
     expect(screen.getByRole('alert')).toHaveTextContent('Catalog refresh failed')
     expect(screen.getByRole('heading', { name: 'Laptop' })).toBeInTheDocument()
   })
@@ -140,7 +140,7 @@ describe('presentation components', () => {
       />,
     )
 
-    expect(screen.getByText('This cart is empty.')).toBeInTheDocument()
+    expect(screen.getByText('Este carrito está vacío.')).toBeInTheDocument()
     expect(screen.getByText('$0.00')).toBeInTheDocument()
   })
 
@@ -157,7 +157,7 @@ describe('presentation components', () => {
     )
 
     expect(screen.getAllByText('$1,799.98')).toHaveLength(2)
-    expect(screen.getByText('Quantity: 2')).toBeInTheDocument()
+    expect(screen.getByText('Cantidad: 2')).toBeInTheDocument()
   })
 
   it('emits remove and clear cart intents', async () => {
@@ -175,8 +175,8 @@ describe('presentation components', () => {
       />,
     )
 
-    await user.click(screen.getByRole('button', { name: 'Remove Laptop' }))
-    await user.click(screen.getByRole('button', { name: 'Clear cart' }))
+    await user.click(screen.getByRole('button', { name: 'Eliminar Laptop' }))
+    await user.click(screen.getByRole('button', { name: 'Vaciar carrito' }))
     expect(onRemove).toHaveBeenCalledWith(1)
     expect(onClear).toHaveBeenCalledOnce()
   })
@@ -186,10 +186,10 @@ describe('presentation components', () => {
     const onSelect = vi.fn()
     render(<UserSelector activeUserId="demo-eliab" onSelect={onSelect} disabled={false} />)
 
-    await user.clear(screen.getByLabelText('User ID'))
-    await user.click(screen.getByRole('button', { name: 'Load cart' }))
+    await user.clear(screen.getByLabelText('ID de usuario'))
+    await user.click(screen.getByRole('button', { name: 'Cargar carrito' }))
 
-    expect(screen.getByRole('alert')).toHaveTextContent('User ID is required.')
+    expect(screen.getByRole('alert')).toHaveTextContent('El ID de usuario es obligatorio.')
     expect(onSelect).not.toHaveBeenCalled()
   })
 
@@ -198,18 +198,84 @@ describe('presentation components', () => {
     const onSelect = vi.fn()
     render(<UserSelector activeUserId="demo-eliab" onSelect={onSelect} disabled={false} />)
 
-    await user.clear(screen.getByLabelText('User ID'))
-    await user.type(screen.getByLabelText('User ID'), '  second-user  ')
-    await user.click(screen.getByRole('button', { name: 'Load cart' }))
+    await user.clear(screen.getByLabelText('ID de usuario'))
+    await user.type(screen.getByLabelText('ID de usuario'), '  second-user  ')
+    await user.click(screen.getByRole('button', { name: 'Cargar carrito' }))
     expect(onSelect).toHaveBeenCalledWith('second-user')
   })
 
   it('expands the newest exchange and labels the backend path as static', () => {
     render(<RequestInspector history={[latestExchange]} />)
 
-    expect(screen.getByText('Latest HTTP exchange')).toBeInTheDocument()
-    expect(screen.getByText('Explained backend path')).toBeInTheDocument()
-    expect(screen.getByText('Static explanation, not runtime telemetry.')).toBeInTheDocument()
+    expect(screen.getByText('Último intercambio HTTP')).toBeInTheDocument()
+    expect(screen.getByText('Ruta explicada del backend')).toBeInTheDocument()
+    expect(screen.getByText('Explicación estática, no telemetría en tiempo real.')).toBeInTheDocument()
     expect(screen.getAllByText(/"quantity": 2/)).toHaveLength(2)
+  })
+
+  it('translates outcomes without changing their internal contract values', () => {
+    const history: HttpExchange[] = [
+      latestExchange,
+      { ...latestExchange, id: 'http-error', outcome: 'http-error', status: 404 },
+      { ...latestExchange, id: 'network-error', outcome: 'network-error', status: null },
+    ]
+
+    render(<RequestInspector history={history} />)
+
+    expect(screen.getByText('Éxito')).toBeInTheDocument()
+    expect(screen.getByText('Error HTTP')).toBeInTheDocument()
+    expect(screen.getByText('Error de red')).toBeInTheDocument()
+  })
+
+  it('renders known interface copy in Spanish', () => {
+    const { container } = render(
+      <>
+        <ConnectionStatus state="connected" />
+        <UserSelector activeUserId="demo-eliab" onSelect={vi.fn()} disabled={false} />
+        <ProductCatalog
+          products={[laptop]}
+          loading={false}
+          error={null}
+          pendingActions={new Set()}
+          onAdd={vi.fn()}
+          onInspect={vi.fn()}
+        />
+        <CartPanel
+          cart={cart}
+          loading={false}
+          error={null}
+          pendingActions={new Set()}
+          onRemove={vi.fn()}
+          onClear={vi.fn()}
+        />
+        <RequestInspector history={[latestExchange]} />
+      </>,
+    )
+
+    expect(container).toHaveTextContent('Catálogo de productos')
+    expect(container).toHaveTextContent('Carrito de demo-eliab')
+    expect(container).toHaveTextContent('Último intercambio HTTP')
+
+    const knownEnglishCopy = [
+      'Backend connected',
+      'User ID',
+      'Load cart',
+      'Product catalog',
+      'Quantity for',
+      'Inspect Laptop',
+      'Add Laptop',
+      'Cart for',
+      'Remove Laptop',
+      'Clear cart',
+      'Latest HTTP exchange',
+      'Explained backend path',
+      'Static explanation',
+      'Request body',
+      'Response body',
+    ]
+
+    for (const copy of knownEnglishCopy) {
+      expect(container).not.toHaveTextContent(copy)
+    }
   })
 })

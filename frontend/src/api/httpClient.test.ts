@@ -95,11 +95,11 @@ describe('httpClient', () => {
 
     await expect(clientFor(fetchFn, captured).request('GET', '/api/products')).rejects.toMatchObject({
       kind: 'network',
-      message: 'Backend unreachable: Failed to fetch',
+      message: 'No se puede acceder al backend: error de red.',
     })
     expect(captured[0]).toMatchObject({
       status: null,
-      responseBody: 'Failed to fetch',
+      responseBody: 'No se pudo completar la solicitud de red.',
       outcome: 'network-error',
     })
   })
@@ -112,7 +112,7 @@ describe('httpClient', () => {
 
     await expect(clientFor(fetchFn, captured).request('GET', '/api/products')).rejects.toMatchObject({
       kind: 'network',
-      message: 'Backend unreachable: HTTP 502',
+      message: 'No se puede acceder al backend: HTTP 502',
     })
     expect(captured[0]).toMatchObject({
       status: 502,

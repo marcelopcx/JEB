@@ -48,9 +48,9 @@ describe('CartDemo', () => {
     const api = apiWith()
     render(<CartDemo apiFactory={factory(api)} />)
 
-    expect(screen.getAllByText(/loading/i).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/cargando/i).length).toBeGreaterThan(0)
     expect(await screen.findByRole('heading', { name: 'Laptop' })).toBeInTheDocument()
-    expect(await screen.findByText('Cart for demo-eliab')).toBeInTheDocument()
+    expect(await screen.findByText('Carrito de demo-eliab')).toBeInTheDocument()
     expect(api.listProducts).toHaveBeenCalledOnce()
     expect(api.getCart).toHaveBeenCalledWith('demo-eliab')
   })
@@ -62,14 +62,14 @@ describe('CartDemo', () => {
       .mockResolvedValueOnce(initialCart)
       .mockRejectedValueOnce(new Error('Cart request failed'))
     render(<CartDemo apiFactory={factory(apiWith({ getCart }))} />)
-    await screen.findByText('Quantity: 1')
+    await screen.findByText('Cantidad: 1')
 
-    await user.clear(screen.getByLabelText('User ID'))
-    await user.type(screen.getByLabelText('User ID'), 'second-user')
-    await user.click(screen.getByRole('button', { name: 'Load cart' }))
+    await user.clear(screen.getByLabelText('ID de usuario'))
+    await user.type(screen.getByLabelText('ID de usuario'), 'second-user')
+    await user.click(screen.getByRole('button', { name: 'Cargar carrito' }))
 
     expect(await screen.findByText('Cart request failed')).toBeInTheDocument()
-    expect(screen.getByText('Quantity: 1')).toBeInTheDocument()
+    expect(screen.getByText('Cantidad: 1')).toBeInTheDocument()
   })
 
   it('does not update the cart optimistically and disables only the add action', async () => {
@@ -77,13 +77,13 @@ describe('CartDemo', () => {
     const pendingAdd = deferred<Cart>()
     const addItem = vi.fn<CartApi['addItem']>().mockReturnValue(pendingAdd.promise)
     render(<CartDemo apiFactory={factory(apiWith({ addItem }))} />)
-    await screen.findByText('Quantity: 1')
+    await screen.findByText('Cantidad: 1')
 
-    await user.click(screen.getByRole('button', { name: 'Add Laptop' }))
+    await user.click(screen.getByRole('button', { name: 'Agregar Laptop' }))
 
-    expect(screen.getByText('Quantity: 1')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Add Laptop' })).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Inspect Laptop' })).toBeEnabled()
+    expect(screen.getByText('Cantidad: 1')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Agregar Laptop' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Inspeccionar Laptop' })).toBeEnabled()
 
     await act(async () => {
       pendingAdd.resolve({
@@ -93,19 +93,19 @@ describe('CartDemo', () => {
       })
     })
 
-    expect(await screen.findByText('Quantity: 3')).toBeInTheDocument()
+    expect(await screen.findByText('Cantidad: 3')).toBeInTheDocument()
   })
 
   it('uses product-by-ID inspection without changing catalog or cart state', async () => {
     const user = userEvent.setup()
     const getProduct = vi.fn<CartApi['getProduct']>().mockResolvedValue(products[0])
     render(<CartDemo apiFactory={factory(apiWith({ getProduct }))} />)
-    await screen.findByText('Quantity: 1')
+    await screen.findByText('Cantidad: 1')
 
-    await user.click(screen.getByRole('button', { name: 'Inspect Laptop' }))
+    await user.click(screen.getByRole('button', { name: 'Inspeccionar Laptop' }))
 
     await waitFor(() => expect(getProduct).toHaveBeenCalledWith(1))
-    expect(screen.getByText('Quantity: 1')).toBeInTheDocument()
+    expect(screen.getByText('Cantidad: 1')).toBeInTheDocument()
   })
 
   it('replaces cart state with the remove response', async () => {
@@ -113,10 +113,10 @@ describe('CartDemo', () => {
     const emptyCart = { userId: 'demo-eliab', items: [], total: 0 }
     const removeItem = vi.fn<CartApi['removeItem']>().mockResolvedValue(emptyCart)
     render(<CartDemo apiFactory={factory(apiWith({ removeItem }))} />)
-    await screen.findByText('Quantity: 1')
+    await screen.findByText('Cantidad: 1')
 
-    await user.click(screen.getByRole('button', { name: 'Remove Laptop' }))
-    expect(await screen.findByText('This cart is empty.')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Eliminar Laptop' }))
+    expect(await screen.findByText('Este carrito está vacío.')).toBeInTheDocument()
     expect(removeItem).toHaveBeenCalledWith('demo-eliab', 1)
   })
 
@@ -125,10 +125,10 @@ describe('CartDemo', () => {
     const emptyCart = { userId: 'demo-eliab', items: [], total: 0 }
     const clearCart = vi.fn<CartApi['clearCart']>().mockResolvedValue(emptyCart)
     render(<CartDemo apiFactory={factory(apiWith({ clearCart }))} />)
-    await screen.findByText('Quantity: 1')
+    await screen.findByText('Cantidad: 1')
 
-    await user.click(screen.getByRole('button', { name: 'Clear cart' }))
-    expect(await screen.findByText('This cart is empty.')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Vaciar carrito' }))
+    expect(await screen.findByText('Este carrito está vacío.')).toBeInTheDocument()
     expect(clearCart).toHaveBeenCalledWith('demo-eliab')
   })
 
@@ -138,7 +138,7 @@ describe('CartDemo', () => {
     render(<CartDemo apiFactory={factory(api)} />)
     await screen.findByRole('heading', { name: 'Laptop' })
 
-    await user.click(screen.getByRole('button', { name: 'Inspect Laptop' }))
+    await user.click(screen.getByRole('button', { name: 'Inspeccionar Laptop' }))
 
     expect(await screen.findByText('Inspect failed')).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Laptop' })).toBeInTheDocument()
@@ -154,18 +154,18 @@ describe('CartDemo', () => {
       .mockResolvedValueOnce(secondCart)
     const addItem = vi.fn<CartApi['addItem']>().mockReturnValue(pendingAdd.promise)
     render(<CartDemo apiFactory={factory(apiWith({ addItem, getCart }))} />)
-    await screen.findByText('Quantity: 1')
+    await screen.findByText('Cantidad: 1')
 
-    await user.click(screen.getByRole('button', { name: 'Add Laptop' }))
-    await user.clear(screen.getByLabelText('User ID'))
-    await user.type(screen.getByLabelText('User ID'), 'second-user')
-    await user.click(screen.getByRole('button', { name: 'Load cart' }))
-    expect(await screen.findByText('Cart for second-user')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Agregar Laptop' }))
+    await user.clear(screen.getByLabelText('ID de usuario'))
+    await user.type(screen.getByLabelText('ID de usuario'), 'second-user')
+    await user.click(screen.getByRole('button', { name: 'Cargar carrito' }))
+    expect(await screen.findByText('Carrito de second-user')).toBeInTheDocument()
 
     await act(async () => pendingAdd.resolve(initialCart))
 
-    expect(screen.getByText('Cart for second-user')).toBeInTheDocument()
-    expect(screen.getByText('This cart is empty.')).toBeInTheDocument()
+    expect(screen.getByText('Carrito de second-user')).toBeInTheDocument()
+    expect(screen.getByText('Este carrito está vacío.')).toBeInTheDocument()
   })
 
   it('serializes cart mutations so backend snapshots cannot resolve out of order', async () => {
@@ -193,11 +193,11 @@ describe('CartDemo', () => {
     )
     await screen.findByRole('heading', { name: 'Mouse' })
 
-    await user.click(screen.getByRole('button', { name: 'Add Laptop' }))
-    await user.click(screen.getByRole('button', { name: 'Add Mouse' }))
+    await user.click(screen.getByRole('button', { name: 'Agregar Laptop' }))
+    await user.click(screen.getByRole('button', { name: 'Agregar Mouse' }))
     expect(addItem).toHaveBeenCalledTimes(1)
-    expect(screen.getByRole('button', { name: 'Add Laptop' })).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Add Mouse' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Agregar Laptop' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Agregar Mouse' })).toBeDisabled()
 
     await act(async () => firstAdd.resolve(initialCart))
     await waitFor(() => expect(addItem).toHaveBeenCalledTimes(2))
@@ -212,7 +212,7 @@ describe('CartDemo', () => {
     }
     await act(async () => secondAdd.resolve(finalCart))
 
-    expect(await screen.findByRole('button', { name: 'Remove Mouse' })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: 'Eliminar Mouse' })).toBeInTheDocument()
     expect(screen.getByText('$924.99')).toBeInTheDocument()
   })
 })

@@ -20,9 +20,9 @@ describe('explanationFor', () => {
     ['DELETE', '/api/cart/demo-eliab', ['CartResource', 'CartService', 'CartCache']],
   ])('maps %s %s without calling it telemetry', (method, path, steps) => {
     expect(explanationFor(method, path)).toMatchObject({
-      label: 'Explained backend path',
+      label: 'Ruta explicada del backend',
       steps,
-      note: 'Static explanation, not runtime telemetry.',
+      note: 'Explicación estática, no telemetría en tiempo real.',
     })
   })
 })

@@ -15,7 +15,7 @@ export function UserSelector({ activeUserId, disabled, onSelect }: UserSelectorP
     const userId = draft.trim()
 
     if (userId.length === 0) {
-      setError('User ID is required.')
+      setError('El ID de usuario es obligatorio.')
       return
     }
 
@@ -25,7 +25,7 @@ export function UserSelector({ activeUserId, disabled, onSelect }: UserSelectorP
 
   return (
     <form className="user-selector" onSubmit={submit} noValidate>
-      <label htmlFor="user-id">User ID</label>
+      <label htmlFor="user-id">ID de usuario</label>
       <div className="user-selector__controls">
         <input
           id="user-id"
@@ -34,7 +34,7 @@ export function UserSelector({ activeUserId, disabled, onSelect }: UserSelectorP
           aria-invalid={error !== null}
         />
         <button type="submit" disabled={disabled}>
-          Load cart
+          Cargar carrito
         </button>
       </div>
       {error && <span role="alert">{error}</span>}

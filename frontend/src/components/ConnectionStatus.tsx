@@ -5,9 +5,9 @@ interface ConnectionStatusProps {
 }
 
 const labels: Record<ConnectionState, string> = {
-  connected: 'Backend connected',
-  loading: 'Contacting backend',
-  unavailable: 'Backend unavailable',
+  connected: 'Backend conectado',
+  loading: 'Contactando al backend',
+  unavailable: 'Backend no disponible',
 }
 
 export function ConnectionStatus({ state }: ConnectionStatusProps) {

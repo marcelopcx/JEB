@@ -7,39 +7,39 @@ import type {
 const explanations: Record<BackendOperation, BackendPathExplanation> = {
   listProducts: {
     operation: 'listProducts',
-    label: 'Explained backend path',
+    label: 'Ruta explicada del backend',
     steps: ['ProductResource', 'ProductService', 'ProductRepository', 'PostgreSQL'],
-    note: 'Static explanation, not runtime telemetry.',
+    note: 'Explicación estática, no telemetría en tiempo real.',
   },
   getProduct: {
     operation: 'getProduct',
-    label: 'Explained backend path',
+    label: 'Ruta explicada del backend',
     steps: ['ProductResource', 'ProductService', 'ProductRepository', 'PostgreSQL'],
-    note: 'Static explanation, not runtime telemetry.',
+    note: 'Explicación estática, no telemetría en tiempo real.',
   },
   getCart: {
     operation: 'getCart',
-    label: 'Explained backend path',
+    label: 'Ruta explicada del backend',
     steps: ['CartResource', 'CartService', 'CartCache'],
-    note: 'Static explanation, not runtime telemetry.',
+    note: 'Explicación estática, no telemetría en tiempo real.',
   },
   addItem: {
     operation: 'addItem',
-    label: 'Explained backend path',
+    label: 'Ruta explicada del backend',
     steps: ['CartResource', 'CartService', 'ProductRepository', 'PostgreSQL', 'CartCache'],
-    note: 'Static explanation, not runtime telemetry.',
+    note: 'Explicación estática, no telemetría en tiempo real.',
   },
   removeItem: {
     operation: 'removeItem',
-    label: 'Explained backend path',
+    label: 'Ruta explicada del backend',
     steps: ['CartResource', 'CartService', 'ProductRepository', 'PostgreSQL', 'CartCache'],
-    note: 'Static explanation, not runtime telemetry.',
+    note: 'Explicación estática, no telemetría en tiempo real.',
   },
   clearCart: {
     operation: 'clearCart',
-    label: 'Explained backend path',
+    label: 'Ruta explicada del backend',
     steps: ['CartResource', 'CartService', 'CartCache'],
-    note: 'Static explanation, not runtime telemetry.',
+    note: 'Explicación estática, no telemetría en tiempo real.',
   },
 }
 

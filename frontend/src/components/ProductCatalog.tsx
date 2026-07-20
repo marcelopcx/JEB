@@ -27,7 +27,7 @@ export function ProductCatalog({
     if (!Number.isInteger(quantity) || quantity <= 0) {
       setValidationErrors((current) => ({
         ...current,
-        [product.id]: 'Enter a positive whole number.',
+        [product.id]: 'Ingresa un número entero positivo.',
       }))
       return
     }
@@ -40,22 +40,22 @@ export function ProductCatalog({
     <section className="panel" aria-labelledby="catalog-title">
       <div className="panel__heading">
         <div>
-          <p className="eyebrow">PostgreSQL-backed</p>
-          <h2 id="catalog-title">Product catalog</h2>
+          <p className="eyebrow">Con respaldo de PostgreSQL</p>
+          <h2 id="catalog-title">Catálogo de productos</h2>
         </div>
-        {loading && <span role="status">Loading catalog...</span>}
+        {loading && <span role="status">Cargando catálogo...</span>}
       </div>
       {error && <p role="alert" className="error-message">{error}</p>}
       <div className="product-grid">
         {products.map((product) => (
           <article className="product-card" key={product.id}>
-            <p className="product-card__id">Product #{product.id}</p>
+            <p className="product-card__id">Producto #{product.id}</p>
             <h3>{product.name}</h3>
             <p>{product.description}</p>
             <strong>
               ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </strong>
-            <label htmlFor={`quantity-${product.id}`}>Quantity for {product.name}</label>
+            <label htmlFor={`quantity-${product.id}`}>Cantidad de {product.name}</label>
             <input
               id={`quantity-${product.id}`}
               type="number"
@@ -76,14 +76,14 @@ export function ProductCatalog({
                 disabled={pendingActions.has(`inspect:${product.id}`)}
                 onClick={() => onInspect(product.id)}
               >
-                Inspect {product.name}
+                Inspeccionar {product.name}
               </button>
               <button
                 type="button"
                 disabled={pendingActions.has(`add:${product.id}`)}
                 onClick={() => submitAdd(product)}
               >
-                Add {product.name}
+                Agregar {product.name}
               </button>
             </div>
           </article>
